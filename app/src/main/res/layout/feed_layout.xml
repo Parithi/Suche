@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tw__solid_white"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/feed_post_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dgts__logo_name"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <ImageView
+            android:id="@+id/feed_user_imageview"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:id="@+id/feed_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/feed_user_imageview"
+            android:fontFamily="sans-serif-bold"
+            android:text="Username"
+            android:textColor="@color/tw__composer_black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/feed_username_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/feed_title_textview"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="-2dp"
+            android:layout_toRightOf="@id/feed_user_imageview"
+            android:text="\@username"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/feed_type_imageview"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/feed_desc_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-light"
+        android:text="This is some description about the feed and the post. This is some more placeholder text"
+        android:textColor="@color/tw__composer_black"
+        android:textSize="17sp" />
+
+
+</LinearLayout>

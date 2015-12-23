@@ -89,34 +89,16 @@ public class FeedsManager {
         });
     }
 
-    private void getLinkedInPosts(){
-        getFeedList().put(5L,new Feed(5, FeedType.LINKEDIN));
-        getFeedList().put(6L,new Feed(6, FeedType.LINKEDIN));
-        getFeedList().put(7L,new Feed(7, FeedType.LINKEDIN));
-        getFeedList().put(8L,new Feed(8, FeedType.LINKEDIN));
-        getFeedList().put(9L,new Feed(9, FeedType.LINKEDIN));
-    }
-
-    private void getFacebookPosts(){
-        getFeedList().put(10L,new Feed(10, FeedType.FACEBOOK));
-        getFeedList().put(11L,new Feed(11, FeedType.FACEBOOK));
-        getFeedList().put(12L,new Feed(12, FeedType.FACEBOOK));
-        getFeedList().put(13L,new Feed(13, FeedType.FACEBOOK));
-        getFeedList().put(14L,new Feed(14, FeedType.FACEBOOK));
-    }
-
-    private void getInstagramPosts(){
-        getFeedList().put(15L, new Feed(15, FeedType.INSTAGRAM));
-        getFeedList().put(16L, new Feed(16, FeedType.INSTAGRAM));
-        getFeedList().put(17L, new Feed(17, FeedType.INSTAGRAM));
-        getFeedList().put(18L, new Feed(18, FeedType.INSTAGRAM));
-        getFeedList().put(19L,new Feed(19, FeedType.INSTAGRAM));
+    private void getRSSFeeds(){
+        getFeedList().put(20L, new Feed(15, FeedType.RSSFEED));
+        getFeedList().put(21L, new Feed(16, FeedType.RSSFEED));
+        getFeedList().put(22L, new Feed(17, FeedType.RSSFEED));
+        getFeedList().put(23L, new Feed(18, FeedType.RSSFEED));
+        getFeedList().put(24L, new Feed(19, FeedType.RSSFEED));
     }
 
     public void getData(){
+        getRSSFeeds();
         getTweets();
-        getFacebookPosts();
-        getInstagramPosts();
-        getLinkedInPosts();
     }
 }

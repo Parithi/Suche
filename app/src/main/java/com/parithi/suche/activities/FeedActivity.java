@@ -18,7 +18,6 @@ public class FeedActivity extends FragmentActivity {
                     .add(R.id.container, new FeedFragment())
                     .commit();
         }
-
     }
 
 }

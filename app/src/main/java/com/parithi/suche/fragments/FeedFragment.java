@@ -17,10 +17,6 @@ import com.parithi.suche.models.Feed;
 import com.parithi.suche.utils.FeedViewFactory;
 import com.parithi.suche.utils.FeedsManager;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-
 /**
  * Created by earul on 12/15/15.
  */
@@ -75,8 +71,11 @@ public class FeedFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(FeedViewHolder holder, int position) {
-            holder.mFrameLayout.removeAllViews();
-            holder.mFrameLayout.addView(feedViewFactory.getViewForType(getActivity(),(Feed) feedsList[position]));
+            holder.mViewPlaceHolderLayout.removeAllViews();
+            holder.mViewPlaceHolderLayout.addView(feedViewFactory.getViewForType(getActivity(), (Feed) feedsList[position]));
+
+            holder.mActionsPlaceHolderLayout.removeAllViews();
+            holder.mViewPlaceHolderLayout.addView(LayoutInflater.from(getActivity()).inflate(R.layout.twitter_actions_layout,null));
         }
 
         @Override
@@ -87,11 +86,13 @@ public class FeedFragment extends Fragment {
 
     private class FeedViewHolder extends RecyclerView.ViewHolder{
 
-        public FrameLayout mFrameLayout;
+        public LinearLayout mViewPlaceHolderLayout;
+        public LinearLayout mActionsPlaceHolderLayout;
 
         public FeedViewHolder(View itemView) {
             super(itemView);
-            mFrameLayout = (FrameLayout) itemView.findViewById(R.id.view_placeholder);
+            mViewPlaceHolderLayout = (LinearLayout) itemView.findViewById(R.id.view_placeholder);
+            mActionsPlaceHolderLayout = (LinearLayout) itemView.findViewById(R.id.actions_placeholder);
         }
 
     }

@@ -7,5 +7,6 @@ public enum FeedType {
     TWITTER,
     INSTAGRAM,
     FACEBOOK,
-    LINKEDIN
+    LINKEDIN,
+    RSSFEED
 }
