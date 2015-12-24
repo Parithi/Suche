@@ -1,9 +1,11 @@
 package com.parithi.suche.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,22 +13,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.parithi.suche.R;
 import com.parithi.suche.models.Feed;
 import com.parithi.suche.utils.FeedViewFactory;
 import com.parithi.suche.utils.FeedsManager;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 /**
  * Created by earul on 12/15/15.
  */
-public class FeedFragment extends Fragment {
+public class FeedFragment extends Fragment implements FeedsManager.FeedManagerDelegate {
 
     private static final String LOG_TAG = FeedFragment.class.getSimpleName();
 
     private RecyclerView mFeedRecyclerView;
     private FeedAdapter mFeedAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private TwitterLoginButton loginButton;
 
     public FeedFragment() {
         setHasOptionsMenu(true);
@@ -49,7 +60,36 @@ public class FeedFragment extends Fragment {
 
         mFeedAdapter = new FeedAdapter();
         mFeedRecyclerView.setAdapter(mFeedAdapter);
+
+        FeedsManager.getInstance().setFeedManagerDelegate(this);
+
+        loginButton = (TwitterLoginButton) rootView.findViewById(R.id.twitter_login_button);
+        loginButton.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                TwitterSession session = result.data;
+                TwitterAuthToken authToken = session.getAuthToken();
+                String token = authToken.token;
+                String secret = authToken.secret;
+
+                Log.d("FeedFragment","Token :" + token);
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                Log.d("TwitterKit", "Login with Twitter failure", exception);
+            }
+        });
+
         return rootView;
+    }
+
+    @Override
+    public void notifyFeedsUpdated() {
+        Log.d("FeedFragment","Updated");
+        if(mFeedAdapter!=null) {
+            mFeedAdapter.updateList();
+        }
     }
 
     private class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder>{
@@ -73,28 +113,35 @@ public class FeedFragment extends Fragment {
         public void onBindViewHolder(FeedViewHolder holder, int position) {
             holder.mViewPlaceHolderLayout.removeAllViews();
             holder.mViewPlaceHolderLayout.addView(feedViewFactory.getViewForType(getActivity(), (Feed) feedsList[position]));
-
-            holder.mActionsPlaceHolderLayout.removeAllViews();
-            holder.mViewPlaceHolderLayout.addView(LayoutInflater.from(getActivity()).inflate(R.layout.twitter_actions_layout,null));
         }
 
         @Override
         public int getItemCount() {
             return feedsList.length;
         }
+
+        private void updateList(){
+            feedsList = FeedsManager.getInstance().getFeedList().values().toArray();
+            notifyDataSetChanged();
+        }
     }
 
     private class FeedViewHolder extends RecyclerView.ViewHolder{
 
         public LinearLayout mViewPlaceHolderLayout;
-        public LinearLayout mActionsPlaceHolderLayout;
 
         public FeedViewHolder(View itemView) {
             super(itemView);
             mViewPlaceHolderLayout = (LinearLayout) itemView.findViewById(R.id.view_placeholder);
-            mActionsPlaceHolderLayout = (LinearLayout) itemView.findViewById(R.id.actions_placeholder);
         }
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(loginButton!=null) {
+            loginButton.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 }

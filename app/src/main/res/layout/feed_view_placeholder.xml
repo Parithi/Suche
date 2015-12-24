@@ -18,13 +18,6 @@
             android:orientation="vertical"
             android:layout_height="match_parent" />
 
-        <LinearLayout
-            android:layout_below="@id/view_placeholder"
-            android:id="@+id/actions_placeholder"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
     </RelativeLayout>
 
 

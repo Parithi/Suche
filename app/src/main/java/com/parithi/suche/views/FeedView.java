@@ -73,32 +73,32 @@ public class FeedView extends LinearLayout {
         return feedTitle;
     }
 
-    public void setFeedTitle(TextView feedTitle) {
-        this.feedTitle = feedTitle;
+    public void setFeedTitle(String feedTitle) {
+        this.feedTitle.setText(feedTitle);
     }
 
     public TextView getFeedUsername() {
         return feedUsername;
     }
 
-    public void setFeedUsername(TextView feedUsername) {
-        this.feedUsername = feedUsername;
+    public void setFeedUsername(String feedUsername) {
+        this.feedUsername.setText(feedUsername);
     }
 
     public TextView getFeedDescription() {
         return feedDescription;
     }
 
-    public void setFeedDescription(TextView feedDescription) {
-        this.feedDescription = feedDescription;
+    public void setFeedDescription(String feedDescription) {
+        this.feedDescription.setText(feedDescription);
     }
 
     public ImageView getFeedUserImage() {
         return feedUserImage;
     }
 
-    public void setFeedUserImage(ImageView feedUserImage) {
-        this.feedUserImage = feedUserImage;
+    public void setFeedUserImage(int feedUserImageResourceId) {
+        this.feedUserImage.setImageResource(feedUserImageResourceId);
     }
 
     public ImageView getFeedTypeImage() {
