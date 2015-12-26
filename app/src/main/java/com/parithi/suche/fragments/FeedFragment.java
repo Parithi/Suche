@@ -11,15 +11,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.parithi.suche.R;
 import com.parithi.suche.models.Feed;
 import com.parithi.suche.utils.FeedViewFactory;
 import com.parithi.suche.utils.FeedsManager;
-import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthToken;

@@ -25,12 +25,7 @@ public class FeedActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
-        feedFragment = new FeedFragment();
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, feedFragment)
-                    .commit();
-        }
+        feedFragment = (FeedFragment) getSupportFragmentManager().findFragmentById(R.id.feed_fragment);
     }
 
     @Override

@@ -191,7 +191,9 @@ public class FeedsManager {
         protected void onPostExecute(ArrayList<Feed> feeds) {
             super.onPostExecute(feeds);
             for(Feed feed : feeds){
-                feedList.put(feed.getId(),feed);
+                if(feedList!=null) {
+                    feedList.put(feed.getId(), feed);
+                }
             }
             if(feedManagerDelegate!=null){
                 feedManagerDelegate.notifyFeedsUpdated();
