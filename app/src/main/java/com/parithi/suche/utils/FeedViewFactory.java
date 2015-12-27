@@ -1,27 +1,21 @@
 package com.parithi.suche.utils;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parithi.suche.R;
+import com.parithi.suche.SucheApplication;
 import com.parithi.suche.models.Feed;
 import com.parithi.suche.models.FeedType;
 import com.parithi.suche.models.RSSFeed;
 import com.parithi.suche.models.Tweet;
 import com.parithi.suche.views.FeedView;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.tweetui.TweetUtils;
 import com.twitter.sdk.android.tweetui.TweetView;
 
 /**
@@ -29,9 +23,10 @@ import com.twitter.sdk.android.tweetui.TweetView;
  */
 public class FeedViewFactory {
 
-    public View getViewForType(final Context context, Feed feed){
+    public View getViewForType(final Context context, final Feed feed){
         View requiredView = null;
         if(feed.getFeedType() == FeedType.TWITTER){
+            final String screenName = ((Tweet) feed).getTweet().user.screenName;
             LinearLayout tweetLinearLayout = new LinearLayout(context);
             tweetLinearLayout.setOrientation(LinearLayout.VERTICAL);
 
@@ -39,22 +34,36 @@ public class FeedViewFactory {
             tweetView.setTweetActionsEnabled(true);
 
             final View twitterActionsLayout = LayoutInflater.from(context).inflate(R.layout.twitter_actions_layout, null);
-            ((TextView) twitterActionsLayout.findViewById(R.id.reply_button)).setText("Reply to @" + ((Tweet) feed).getTweet().user.screenName);
-            ((TextView) twitterActionsLayout.findViewById(R.id.reply_button)).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EditText commentEditText = (EditText) twitterActionsLayout.findViewById(R.id.comment_edittext);
-                    if(commentEditText.getVisibility() == View.GONE){
-                        commentEditText.setVisibility(View.VISIBLE);
-
-                        LinearLayout.LayoutParams marginParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        marginParams.setMargins(0, 2, 0, 0);
-                        twitterActionsLayout.findViewById(R.id.actions_parent_linearlayout).setLayoutParams(marginParams);
-                    } else {
-                        Toast.makeText(context,"This is some reply",Toast.LENGTH_SHORT).show();
+            TextView replyButton = ((TextView) twitterActionsLayout.findViewById(R.id.reply_button));
+            if(SucheApplication.getActiveSession()!=null){
+                replyButton.setText("Reply to @" + ((Tweet) feed).getTweet().user.screenName);
+                replyButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EditText commentEditText = (EditText) twitterActionsLayout.findViewById(R.id.comment_edittext);
+                        if(commentEditText.getVisibility() == View.GONE){
+                            commentEditText.setVisibility(View.VISIBLE);
+                            LinearLayout.LayoutParams marginParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            marginParams.setMargins(0, 2, 0, 0);
+                            twitterActionsLayout.findViewById(R.id.actions_parent_linearlayout).setLayoutParams(marginParams);
+                            commentEditText.setText("@" + screenName + " ");
+                            int pos = commentEditText.getText().length();
+                            commentEditText.setSelection(pos);
+                            commentEditText.requestFocus();
+                        } else {
+                            if(!TextUtils.isEmpty(commentEditText.getText())) {
+                                commentEditText.setVisibility(View.GONE);
+//                            TwitterUtils.replyToTweet(context, commentEditText.getText().toString(), feed.getId());
+                            } else {
+                                Toast.makeText(context,"Please enter reply text",Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                replyButton.setText("Login to reply");
+            }
+
 
             tweetLinearLayout.addView(tweetView);
             tweetLinearLayout.addView(twitterActionsLayout);

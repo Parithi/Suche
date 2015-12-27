@@ -16,10 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#efefef"
+            android:maxLength="140"
             android:fontFamily="sans-serif-light"
             android:padding="8dp"
-            android:text="This is some text"
-            android:visibility="gone" />
+            android:visibility="gone">
+        </EditText>
 
         <LinearLayout
             android:id="@+id/actions_parent_linearlayout"

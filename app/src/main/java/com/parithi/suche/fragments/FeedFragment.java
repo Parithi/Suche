@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.parithi.suche.R;
+import com.parithi.suche.SucheApplication;
 import com.parithi.suche.models.Feed;
 import com.parithi.suche.utils.FeedViewFactory;
 import com.parithi.suche.utils.FeedsManager;
@@ -61,22 +62,26 @@ public class FeedFragment extends Fragment implements FeedsManager.FeedManagerDe
         FeedsManager.getInstance().setFeedManagerDelegate(this);
 
         loginButton = (TwitterLoginButton) rootView.findViewById(R.id.twitter_login_button);
-        loginButton.setCallback(new Callback<TwitterSession>() {
-            @Override
-            public void success(Result<TwitterSession> result) {
-                TwitterSession session = result.data;
-                TwitterAuthToken authToken = session.getAuthToken();
-                String token = authToken.token;
-                String secret = authToken.secret;
+        if(SucheApplication.getActiveSession()==null) {
+            loginButton.setCallback(new Callback<TwitterSession>() {
+                @Override
+                public void success(Result<TwitterSession> result) {
+                    TwitterSession session = result.data;
+                    TwitterAuthToken authToken = session.getAuthToken();
+                    String token = authToken.token;
+                    String secret = authToken.secret;
 
-                Log.d("FeedFragment","Token :" + token);
-            }
+                    Log.d("FeedFragment", "Token :" + token);
+                }
 
-            @Override
-            public void failure(TwitterException exception) {
-                Log.d("TwitterKit", "Login with Twitter failure", exception);
-            }
-        });
+                @Override
+                public void failure(TwitterException exception) {
+                    Log.d("TwitterKit", "Login with Twitter failure", exception);
+                }
+            });
+        } else {
+            loginButton.setVisibility(View.GONE);
+        }
 
         return rootView;
     }
@@ -137,8 +142,12 @@ public class FeedFragment extends Fragment implements FeedsManager.FeedManagerDe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        mFeedAdapter.notifyDataSetChanged();
         if(loginButton!=null) {
             loginButton.onActivityResult(requestCode, resultCode, data);
+            if(SucheApplication.getActiveSession()!=null){
+                loginButton.setVisibility(View.GONE);
+            }
         }
     }
 }
