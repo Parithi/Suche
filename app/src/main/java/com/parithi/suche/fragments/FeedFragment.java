@@ -82,7 +82,6 @@ public class FeedFragment extends Fragment implements FeedsManager.FeedManagerDe
         } else {
             loginButton.setVisibility(View.GONE);
         }
-
         return rootView;
     }
 
@@ -97,11 +96,9 @@ public class FeedFragment extends Fragment implements FeedsManager.FeedManagerDe
     private class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder>{
 
         Object[] feedsList;
-        FeedViewFactory feedViewFactory;
 
         public FeedAdapter(){
             feedsList = FeedsManager.getInstance().getFeedList().values().toArray();
-            feedViewFactory = new FeedViewFactory();
         }
 
         @Override
@@ -114,7 +111,7 @@ public class FeedFragment extends Fragment implements FeedsManager.FeedManagerDe
         @Override
         public void onBindViewHolder(FeedViewHolder holder, int position) {
             holder.mViewPlaceHolderLayout.removeAllViews();
-            holder.mViewPlaceHolderLayout.addView(feedViewFactory.getViewForType(getActivity(), (Feed) feedsList[position]));
+            holder.mViewPlaceHolderLayout.addView(FeedViewFactory.getViewForType(getActivity(), (Feed) feedsList[position]));
         }
 
         @Override
